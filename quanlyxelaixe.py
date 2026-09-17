@@ -547,6 +547,356 @@ tree_xe.bind("<<TreeviewSelect>>", chon_xe)
 hien_thi_danh_sach_xe()
 
 #===========THONG TIN LAI XE ============
+frame_thongtin_laixe = tk.LabelFrame( #tạo khung thong tin
+    frame_laixe,
+    text="THÔNG TIN LÁI XE",
+    font=("Arial", 12, "bold"),
+    padx=10,
+    pady=10
+)
+frame_thongtin_laixe.pack(
+    fill="x",
+    padx=10,
+    pady =10,
+)
 
+label_malaixe = tk.Label(
+    frame_thongtin_laixe,
+    text ='Mã Lái Xe: ',
+    font=("Arial", 10, "bold"),
+)
+label_malaixe.grid(
+    row = 0,
+    column =0,
+    padx = 5,
+    pady = 5,
+)
+entry_malaixe = tk.Entry(
+    frame_thongtin_laixe,
+    width=25
+)
+entry_malaixe.grid(
+    row = 0,
+    column=1,
+    padx = 5,
+    pady = 5,
+)
+label_hoten = tk.Label(
+    frame_thongtin_laixe,
+    text ='Họ Và Tên: ',
+    font=("Arial", 10, 'bold'),
+)
+label_hoten.grid(
+    row = 0,
+    column=2,
+    padx = 5,
+    pady = 5,
+)
+entry_hoten = tk.Entry(
+    frame_thongtin_laixe,
+    width = 25,
+)
+entry_hoten.grid(
+    row = 0,
+    column=3,
+    padx = 5,
+    pady = 5,
+)
+label_sdt = tk.Label(
+    frame_thongtin_laixe,
+    text="Số Điện Thoại: ",
+    font=("Arial", 10, 'bold'),
+)
+label_sdt.grid(
+    row = 0,
+    column=4,
+    padx = 5,
+    pady = 5,
+)
+entry_sdt = tk.Entry(
+    frame_thongtin_laixe,
+    width = 25,
+)
+entry_sdt.grid(
+    row = 0,
+    column=5,
+    padx = 5,
+    pady = 5,
+)
+label_sogplx = tk.Label(
+    frame_thongtin_laixe,
+    text = 'Số GPLX: ',
+    font=("Arial", 10, 'bold'),
+)
+label_sogplx.grid(
+    row = 1,
+    column =0,
+    padx = 5,
+    pady = 5,
+)
+entry_sogplx = tk.Entry(
+    frame_thongtin_laixe,
+    width = 25,
+)
+entry_sogplx.grid(
+    row = 1,
+    column=1,
+    padx = 5,
+    pady = 5,
+)
+label_loaibang = tk.Label(
+    frame_thongtin_laixe,
+    text = 'Loại Bằng: ',
+    font=("Arial", 10, 'bold'),
+)
+label_loaibang.grid(
+    row =1,
+    column=2,
+    padx = 5,
+    pady = 5,
+)
+entry_loaibang = tk.Entry(
+    frame_thongtin_laixe,
+    width = 25,
+)
+entry_loaibang.grid(
+    row = 1,
+    column=3,
+    padx = 5,
+    pady = 5,
+)
+label_trangthailaixe = tk.Label(
+    frame_thongtin_laixe,
+    text =' Trạng Thái: ',
+    font=("Arial", 10, 'bold'),
+)
+label_trangthailaixe.grid(
+    row =1,
+    column=4,
+    padx = 5,
+    pady = 5,
+)
+combo_trangthailaixe = ttk.Combobox(
+    frame_thongtin_laixe,
+    values = ["Đang làm việc", "Tạm nghỉ"],
+    width = 22,
+    state="readonly"
+)
+combo_trangthailaixe.grid(
+    row = 1,
+    column=5,
+    padx = 5,
+    pady = 5,
+)
+#=============== CÁC HÀM TRONG BUTTON LÁI XA ===========
+def them_lai_xe():
+    malaixe = entry_malaixe.get().strip()
+    hoten = entry_hoten.get().strip()
+    sodienthoai = entry_sdt.get().strip()
+    sogplx = entry_sogplx.get().strip()
+    loaibang = entry_loaibang.get().strip()
+    trangthailaixe = combo_trangthailaixe.get().strip()
+    if malaixe == "":
+        messagebox.showwarning("CẢNH BÁO", "Mã Lái Xe Không Được Để Trống!")
+        entry_malaixe.focus()
+        return
+    if hoten == "":
+        messagebox.showwarning("CẢNH BÁO", "Họ Và Tên Không Được Để Trống!")
+        entry_hoten.focus()
+        return
+
+    if sodienthoai == "":
+        messagebox.showwarning("CẢNH BÁO", "Số Điện Thoại Không Được Để Trống!")
+        entry_sdt.focus()
+        return
+
+    if sogplx == "":
+        messagebox.showwarning("CẢNH BÁO", "Số GPLX Không Được Để Trống!")
+        entry_sogplx.focus()
+        return
+
+    if loaibang == "":
+        messagebox.showwarning("CẢNH BÁO", "Loại Bằng Không Được Để Trống!")
+        entry_loaibang.focus()
+        return
+
+    if trangthailaixe == "":
+        messagebox.showwarning("CẢNH BÁO", "Trạng Thái Không Được Để Trống!")
+        combo_trangthailaixe.focus()
+        return
+
+    #======== CHUẨN HÓA =========
+    malaixe = malaixe.upper()
+    hoten = hoten.title()
+    sodienthoai = sodienthoai.upper()
+    sogplx = sogplx.upper()
+    loaibang = loaibang.upper()
+
+    kq = laixedao.them_lai_xe(malaixe, hoten, sodienthoai, sogplx, loaibang, trangthailaixe)
+    if kq:
+        messagebox.showinfo("THÔNG BÁO", "Thêm Lái Xe Thành Công!")
+    else:
+        messagebox.showerror("ERROR", "Thêm Lái Xe Thất Bại !!!")
+
+frame_buttonlaixe = tk.Frame(frame_laixe)
+frame_buttonlaixe.pack(fill='x', padx=10, pady =10)
+
+button_themlaixe = tk.Button(
+    frame_buttonlaixe,
+    text='THÊM LÁI XE',
+    bg='#374151',
+    fg='white',
+    command = them_lai_xe
+)
+button_themlaixe.grid(
+    row = 0,
+    column = 0,
+    sticky = 'ew',
+    padx = (0,5),
+    pady = 5,
+)
+
+button_sualaixe = tk.Button(
+    frame_buttonlaixe,
+    text='SỬA LÁI XE',
+    bg='#374151',
+    fg='white',
+)
+button_sualaixe.grid(
+    row = 0,
+    column = 1,
+    sticky = 'ew',
+    padx = 5,
+    pady = 5,
+)
+
+button_xoalaixe = tk.Button(
+    frame_buttonlaixe,
+    text ='XÓA LÁI XE',
+    bg='#374151',
+    fg='white',
+)
+button_xoalaixe.grid(
+    row = 0,
+    column = 2,
+    sticky = 'ew',
+    padx = 5,
+    pady = 5,
+)
+button_huylaixe = tk.Button(
+    frame_buttonlaixe,
+    text = 'HỦY',
+    bg='#374151',
+    fg='white',
+)
+button_huylaixe.grid(
+    row = 0,
+    column = 3,
+    sticky = 'ew',
+    padx = 5,
+    pady = 5,
+)
+button_thongkelaixe = tk.Button(
+    frame_buttonlaixe,
+    text = 'THỐNG KÊ LÁI XE',
+    bg = '#374151',
+    fg = 'white',
+)
+button_thongkelaixe.grid(
+    row = 0,
+    column = 4,
+    sticky = 'ew',
+    padx=5,
+    pady=5,
+)
+button_danhsachlaixe = tk.Button(
+    frame_buttonlaixe,
+    text = 'DANH SÁCH LÁI XE',
+    bg='#374151',
+    fg='white',
+)
+button_danhsachlaixe.grid(
+    row = 0,
+    column = 5,
+    sticky = 'ew',
+    padx=5,
+    pady=5,
+)
+frame_timkiemlaixe = tk.Frame(frame_buttonlaixe)
+frame_timkiemlaixe.grid(
+    row = 0,
+    column = 6,
+    sticky = 'w'
+)
+label_timkiemlaixe = tk.Label(
+    frame_timkiemlaixe,
+    text ='Tên Lái Xe: ',
+    font = ("Arial", 10, 'bold'),
+)
+label_timkiemlaixe.grid(
+    row = 0,
+    column = 0,
+    padx = 5,
+    pady = 5,
+)
+entry_timkiemlaixe = tk.Entry(
+    frame_timkiemlaixe,
+    width = 25,
+)
+entry_timkiemlaixe.grid(
+    row = 0,
+    column=1,
+    padx = 5,
+    pady = 5,
+)
+button_timkiemlaixe = tk.Button(
+    frame_timkiemlaixe,
+    text='TÌM KIẾM'
+)
+button_timkiemlaixe.grid(
+    row = 0,
+    column = 2,
+)
+frame_buttonlaixe.grid_columnconfigure(0, weight=1)
+frame_buttonlaixe.grid_columnconfigure(1, weight=1)
+frame_buttonlaixe.grid_columnconfigure(2, weight=1)
+frame_buttonlaixe.grid_columnconfigure(3, weight=1)
+frame_buttonlaixe.grid_columnconfigure(4, weight=1)
+frame_buttonlaixe.grid_columnconfigure(5, weight=1)
+frame_buttonlaixe.grid_columnconfigure(6, weight=1)
+#===========TREE LAI XE ============
+frame_danhsachlaixe = tk.Frame(frame_laixe)
+frame_danhsachlaixe.pack(
+    fill = 'both',
+    expand = True,
+    padx= 5,
+    pady =5
+)
+tree_laixe = ttk.Treeview(
+    frame_danhsachlaixe,
+    columns = ("MaLaiXe", "HoTen", "SoDienThoai", "SoGPLX", "LoaiBang", "TrangThai"),
+    show = 'headings',
+)
+
+tree_laixe.heading("MaLaiXe", text="Mã Lái Xe")
+tree_laixe.heading("HoTen", text= "Họ Và Tên")
+tree_laixe.heading("SoDienThoai", text= "Số Điện Thoại")
+tree_laixe.heading("SoGPLX", text= "Số GPLX")
+tree_laixe.heading("LoaiBang", text= "Loại Bằng")
+tree_laixe.heading("TrangThai", text= "Trạng Thái")
+
+tree_laixe.column("MaLaiXe", width=100)
+tree_laixe.column("HoTen", width=180)
+tree_laixe.column("SoDienThoai", width=140)
+tree_laixe.column("SoGPLX", width=140)
+tree_laixe.column("LoaiBang", width=80)
+tree_laixe.column("TrangThai", width=160)
+
+tree_laixe.pack(
+    fill ='both',
+    expand = True,
+    padx=10,
+    pady=10,
+)
 #=========== MAINLOOP ============
 root.mainloop()

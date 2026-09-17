@@ -17,14 +17,14 @@ class LaiXeDAO:
         cursor.close()
         return result
 
-    def them_lai_xe(self, malaixe, hoten, sodienthoai, sogplx, loaibang):
+    def them_lai_xe(self, malaixe, hoten, sodienthoai, sogplx, loaibang, trangthai):
         cursor = self.conn.cursor()
         try:
             cursor.execute(
                 """
-                INSERT INTO LaiXe (MaLaiXe, HoTen, SoDienThoai, SoGPLX, LoaiBang)
-                VALUES (?, ?, ?, ?, ?)
-                """, malaixe, hoten, sodienthoai, sogplx, loaibang
+                INSERT INTO LaiXe (MaLaiXe, HoTen, SoDienThoai, SoGPLX, LoaiBang, TrangThai)
+                VALUES (?, ?, ?, ?, ?, ?)
+                """, malaixe, hoten, sodienthoai, sogplx, loaibang, trangthai
             )
             self.conn.commit()
             cursor.close()
