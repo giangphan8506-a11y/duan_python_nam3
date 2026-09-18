@@ -35,7 +35,7 @@ class PhanCongDAO(Database):
         try:
             cursor.execute(
                 """
-                INSERT INTO PhanCong (MaLaiXi, MaXe, NgayPhanCong, Trangthai)
+                INSERT INTO PhanCong (MaLaiXe, MaXe, NgayPhanCong, Trangthai)
                 VALUES (?, ?, ?, ?)
                 """,malaixe, maxe, ngayphancong, trangthai
             )
@@ -43,7 +43,7 @@ class PhanCongDAO(Database):
             cursor.close()
             return True
         except Exception as e:
-            self.cursor.rollback()
+            self.conn.rollback()
             cursor.close()
             return False
     def sua_phancong(self, maphancong, malaixe, maxe, ngayphancong, trangthai):
@@ -60,7 +60,7 @@ class PhanCongDAO(Database):
             cursor.close()
             return True
         except Exception as e:
-            self.cursor.rollback()
+            self.conn.rollback()
             cursor.close()
             return False
     def Xoa_phancong(self, maphancong):
@@ -76,7 +76,7 @@ class PhanCongDAO(Database):
             cursor.close()
             return True
         except Exception as e:
-            self.cursor.rollback()
+            self.conn.rollback()
             cursor.close()
             return False
     def xem_phan_cong_chi_tiet(self):

@@ -60,15 +60,15 @@ class LaiXeDAO:
         cursor.close()
         return result
 
-    def sua_lai_xe(self, malaixe, hoten, sodienthoai, sogplx, loaibang):
+    def sua_lai_xe(self, malaixe, hoten, sodienthoai, sogplx, loaibang,trangthai):
         cursor = self.conn.cursor()
         try:
             cursor.execute(
                 """
                 UPDATE LaiXe 
-                SET HoTen = ?, SoDienThoai = ?, SoGPLX = ?, LoaiBang = ?
+                SET HoTen = ?, SoDienThoai = ?, SoGPLX = ?, LoaiBang = ?, TrangThai = ?
                 WHERE MaLaiXe = ?
-                """, hoten, sodienthoai, sogplx, loaibang,malaixe
+                """, hoten, sodienthoai, sogplx, loaibang,trangthai, malaixe
             )
             self.conn.commit()
             cursor.close()
@@ -95,3 +95,13 @@ class LaiXeDAO:
             cursor.close()
             return False
 
+    def thong_ke_lai_xe(self):
+        cursor = self.conn.cursor()
+
+        cursor.execute("""
+            SELECT TrangThai, COUNT(*)
+            FROM LaiXe
+            GROUP BY TrangThai
+        """)
+
+        return cursor.fetchall()
