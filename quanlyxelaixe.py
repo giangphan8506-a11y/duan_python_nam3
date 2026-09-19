@@ -10,9 +10,18 @@ xedao = XeDAO()
 laixedao = LaiXeDAO()
 phancongdao = PhanCongDAO()
 loaixedao = LoaiXeDAO()
+
 #========== WINDOW ==============
 root = tk.Tk() #tao cua so chinh gan vao root
 root.title("QUẢN LÝ XE VÀ LÁI XE")
+style = ttk.Style(root)
+style.theme_use("clam")
+style.configure(
+    "Treeview.Heading",
+    background="#18181B",
+    foreground="white",
+    font=("Arial", 10, "bold")
+)
 center_window(root, 1100, 700)
 frame_main = tk.Frame(root)
 frame_main.pack(fill='both', expand=True)
@@ -1238,6 +1247,8 @@ def them_phan_cong():
             "CẢNH BÁO",
             "Vui lòng nhập mã lái xe!"
         )
+
+        entry_malaixe_pc.focus()
         return
 
     if maxe == "":
@@ -1245,6 +1256,7 @@ def them_phan_cong():
             "CẢNH BÁO",
             "Vui lòng nhập mã xe!"
         )
+        entry_maxe_pc.focus()
         return
 
     if ngayphancong == "":
@@ -1252,6 +1264,7 @@ def them_phan_cong():
             "CẢNH BÁO",
             "Vui lòng nhập ngày phân công!"
         )
+        entry_ngayphancong.focus()
         return
 
     if trangthai == "":
@@ -1259,6 +1272,7 @@ def them_phan_cong():
             "CẢNH BÁO",
             "Vui lòng chọn trạng thái!"
         )
+        combo_trangthai_pc.focus()
         return
 
     malaixe = malaixe.upper()
