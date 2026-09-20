@@ -1067,6 +1067,7 @@ tree_laixe.pack(
 tree_laixe.bind('<<TreeviewSelect>>', chon_lai_xe)
 hien_thi_danh_sach_lai_Xe()
 #========== FRAME PHAN CONG ==========
+
 frame_thongtin_phancong = tk.LabelFrame(
     frame_phancong,
     text="THÔNG TIN PHÂN CÔNG",
@@ -1081,6 +1082,8 @@ frame_thongtin_phancong.pack(
     pady=10
 )
 
+
+# ================= MÃ LÁI XE =================
 
 label_malaixe_pc = tk.Label(
     frame_thongtin_phancong,
@@ -1107,6 +1110,8 @@ entry_malaixe_pc.grid(
 )
 
 
+# ================= MÃ XE =================
+
 label_maxe_pc = tk.Label(
     frame_thongtin_phancong,
     text="Mã xe:"
@@ -1132,7 +1137,7 @@ entry_maxe_pc.grid(
 )
 
 
-
+# ================= NGÀY PHÂN CÔNG =================
 
 label_ngayphancong = tk.Label(
     frame_thongtin_phancong,
@@ -1159,7 +1164,34 @@ entry_ngayphancong.grid(
 )
 
 
+# ================= NGÀY KẾT THÚC =================
 
+label_ngayketthuc = tk.Label(
+    frame_thongtin_phancong,
+    text="Ngày kết thúc:"
+)
+
+label_ngayketthuc.grid(
+    row=1,
+    column=2,
+    padx=5,
+    pady=8
+)
+
+entry_ngayketthuc = tk.Entry(
+    frame_thongtin_phancong,
+    width=25
+)
+
+entry_ngayketthuc.grid(
+    row=1,
+    column=3,
+    padx=5,
+    pady=8
+)
+
+
+# ================= TRẠNG THÁI =================
 
 label_trangthai_pc = tk.Label(
     frame_thongtin_phancong,
@@ -1167,8 +1199,8 @@ label_trangthai_pc = tk.Label(
 )
 
 label_trangthai_pc.grid(
-    row=1,
-    column=2,
+    row=0,
+    column=4,
     padx=5,
     pady=8
 )
@@ -1184,11 +1216,16 @@ combo_trangthai_pc = ttk.Combobox(
 )
 
 combo_trangthai_pc.grid(
-    row=1,
-    column=3,
+    row=0,
+    column=5,
     padx=5,
     pady=8
 )
+
+
+# =========================================================
+#                  CHỌN PHÂN CÔNG
+# =========================================================
 
 def chon_phan_cong(event):
 
@@ -1201,16 +1238,24 @@ def chon_phan_cong(event):
             "values"
         )
 
+        # Mã lái xe
         entry_malaixe_pc.delete(0, tk.END)
         entry_malaixe_pc.insert(0, pc[1])
 
+        # Mã xe
         entry_maxe_pc.delete(0, tk.END)
         entry_maxe_pc.insert(0, pc[2])
 
+        # Ngày phân công
         entry_ngayphancong.delete(0, tk.END)
         entry_ngayphancong.insert(0, pc[3])
 
-        combo_trangthai_pc.set(pc[4])
+        # Ngày kết thúc
+        entry_ngayketthuc.delete(0, tk.END)
+        entry_ngayketthuc.insert(0, pc[4])
+
+        # Trạng thái
+        combo_trangthai_pc.set(pc[5])
 
 
 
@@ -1227,22 +1272,28 @@ def hien_thi_danh_sach_phancong():
             "",
             tk.END,
             values=(
-                pc[0],
-                pc[1],
-                pc[2],
-                pc[3],
-                pc[4]
+                pc[0],     # MaPhanCong
+                pc[1],     # MaLaiXe
+                pc[2],     # MaXe
+                pc[3],     # NgayPhanCong
+                pc[4],     # NgayKetThuc
+                pc[5]      # TrangThai
             )
         )
+
 
 def them_phan_cong():
 
     malaixe = entry_malaixe_pc.get().strip()
     maxe = entry_maxe_pc.get().strip()
     ngayphancong = entry_ngayphancong.get().strip()
+    ngayketthuc = entry_ngayketthuc.get().strip()
     trangthai = combo_trangthai_pc.get().strip()
 
+
+    # Kiểm tra mã lái xe
     if malaixe == "":
+
         messagebox.showwarning(
             "CẢNH BÁO",
             "Vui lòng nhập mã lái xe!"
@@ -1251,39 +1302,79 @@ def them_phan_cong():
         entry_malaixe_pc.focus()
         return
 
+
+    # Kiểm tra mã xe
     if maxe == "":
+
         messagebox.showwarning(
             "CẢNH BÁO",
             "Vui lòng nhập mã xe!"
         )
+
         entry_maxe_pc.focus()
         return
 
+
+    # Kiểm tra ngày phân công
     if ngayphancong == "":
+
         messagebox.showwarning(
             "CẢNH BÁO",
             "Vui lòng nhập ngày phân công!"
         )
+
         entry_ngayphancong.focus()
         return
 
+
+    # Kiểm tra trạng thái
     if trangthai == "":
+
         messagebox.showwarning(
             "CẢNH BÁO",
             "Vui lòng chọn trạng thái!"
         )
+
         combo_trangthai_pc.focus()
         return
 
+
+    # Nếu đang phân công
+    # thì ngày kết thúc phải để trống
+
+    if trangthai == "Đang phân công":
+
+        ngayketthuc = None
+
+
+    # Nếu đã kết thúc
+    # thì bắt buộc phải có ngày kết thúc
+
+    elif trangthai == "Đã kết thúc":
+
+        if ngayketthuc == "":
+
+            messagebox.showwarning(
+                "CẢNH BÁO",
+                "Vui lòng nhập ngày kết thúc!"
+            )
+
+            entry_ngayketthuc.focus()
+            return
+
+
     malaixe = malaixe.upper()
     maxe = maxe.upper()
+
 
     kq = phancongdao.them_phancong(
         malaixe,
         maxe,
         ngayphancong,
+        ngayketthuc,
         trangthai
     )
+
 
     if kq:
 
@@ -1294,12 +1385,16 @@ def them_phan_cong():
 
         hien_thi_danh_sach_phancong()
 
+        huy_phan_cong()
+
     else:
 
         messagebox.showerror(
             "ERROR",
             "THÊM PHÂN CÔNG THẤT BẠI!"
         )
+
+
 
 def sua_phan_cong():
 
@@ -1311,34 +1406,100 @@ def sua_phan_cong():
             "CẢNH BÁO",
             "Vui lòng chọn phân công cần sửa!"
         )
+
         return
+
 
     pc = tree_phancong.item(
         selected[0],
         "values"
     )
 
+
     maphancong = pc[0]
 
     malaixe = entry_malaixe_pc.get().strip()
     maxe = entry_maxe_pc.get().strip()
     ngayphancong = entry_ngayphancong.get().strip()
+    ngayketthuc = entry_ngayketthuc.get().strip()
     trangthai = combo_trangthai_pc.get().strip()
 
-    if malaixe == "" or maxe == "" or ngayphancong == "" or trangthai == "":
+
+    # Kiểm tra dữ liệu
+
+    if malaixe == "":
+
         messagebox.showwarning(
             "CẢNH BÁO",
-            "Vui lòng nhập đầy đủ thông tin!"
+            "Vui lòng nhập mã lái xe!"
         )
+
         return
+
+
+    if maxe == "":
+
+        messagebox.showwarning(
+            "CẢNH BÁO",
+            "Vui lòng nhập mã xe!"
+        )
+
+        return
+
+
+    if ngayphancong == "":
+
+        messagebox.showwarning(
+            "CẢNH BÁO",
+            "Vui lòng nhập ngày phân công!"
+        )
+
+        return
+
+
+    if trangthai == "":
+
+        messagebox.showwarning(
+            "CẢNH BÁO",
+            "Vui lòng chọn trạng thái!"
+        )
+
+        return
+
+
+    # Đang phân công
+    # Không có ngày kết thúc
+
+    if trangthai == "Đang phân công":
+
+        ngayketthuc = None
+
+
+    # Đã kết thúc
+    # Bắt buộc có ngày kết thúc
+
+    elif trangthai == "Đã kết thúc":
+
+        if ngayketthuc == "":
+
+            messagebox.showwarning(
+                "CẢNH BÁO",
+                "Vui lòng nhập ngày kết thúc!"
+            )
+
+            entry_ngayketthuc.focus()
+            return
+
 
     kq = phancongdao.sua_phancong(
         maphancong,
         malaixe.upper(),
         maxe.upper(),
         ngayphancong,
+        ngayketthuc,
         trangthai
     )
+
 
     if kq:
 
@@ -1349,6 +1510,8 @@ def sua_phan_cong():
 
         hien_thi_danh_sach_phancong()
 
+        huy_phan_cong()
+
     else:
 
         messagebox.showerror(
@@ -1357,6 +1520,9 @@ def sua_phan_cong():
         )
 
 
+# =========================================================
+#                    XÓA PHÂN CÔNG
+# =========================================================
 
 def xoa_phan_cong():
 
@@ -1368,26 +1534,33 @@ def xoa_phan_cong():
             "CẢNH BÁO",
             "Vui lòng chọn phân công cần xóa!"
         )
+
         return
+
 
     pc = tree_phancong.item(
         selected[0],
         "values"
     )
 
+
     maphancong = pc[0]
+
 
     xacnhan = messagebox.askyesno(
         "XÁC NHẬN",
         f"Bạn có chắc muốn xóa phân công {maphancong}?"
     )
 
+
     if not xacnhan:
         return
+
 
     kq = phancongdao.Xoa_phancong(
         maphancong
     )
+
 
     if kq:
 
@@ -1398,14 +1571,14 @@ def xoa_phan_cong():
 
         hien_thi_danh_sach_phancong()
 
+        huy_phan_cong()
+
     else:
 
         messagebox.showerror(
             "ERROR",
             "XÓA PHÂN CÔNG THẤT BẠI!"
         )
-
-
 
 
 def huy_phan_cong():
@@ -1421,6 +1594,11 @@ def huy_phan_cong():
     )
 
     entry_ngayphancong.delete(
+        0,
+        tk.END
+    )
+
+    entry_ngayketthuc.delete(
         0,
         tk.END
     )
@@ -1523,9 +1701,6 @@ for i in range(4):
         weight=1
     )
 
-
-# ======== TREE PHAN CÔNG =============
-
 frame_danhsachphancong = tk.LabelFrame(
     frame_phancong,
     text="DANH SÁCH PHÂN CÔNG",
@@ -1553,6 +1728,7 @@ tree_phancong = ttk.Treeview(
         "MaLaiXe",
         "MaXe",
         "NgayPhanCong",
+        "NgayKetThuc",
         "TrangThai"
     ),
     show="headings"
@@ -1580,6 +1756,11 @@ tree_phancong.heading(
 )
 
 tree_phancong.heading(
+    "NgayKetThuc",
+    text="Ngày kết thúc"
+)
+
+tree_phancong.heading(
     "TrangThai",
     text="Trạng thái"
 )
@@ -1587,31 +1768,37 @@ tree_phancong.heading(
 
 tree_phancong.column(
     "MaPhanCong",
-    width=150,
+    width=120,
     anchor="center"
 )
 
 tree_phancong.column(
     "MaLaiXe",
-    width=150,
+    width=120,
     anchor="center"
 )
 
 tree_phancong.column(
     "MaXe",
-    width=150,
+    width=120,
     anchor="center"
 )
 
 tree_phancong.column(
     "NgayPhanCong",
-    width=180,
+    width=150,
+    anchor="center"
+)
+
+tree_phancong.column(
+    "NgayKetThuc",
+    width=150,
     anchor="center"
 )
 
 tree_phancong.column(
     "TrangThai",
-    width=200,
+    width=180,
     anchor="center"
 )
 
@@ -1630,7 +1817,7 @@ tree_phancong.bind(
 )
 
 
-# Hiển thị danh sách khi chạy chương trình
 hien_thi_danh_sach_phancong()
+
 #=========== MAINLOOP ============
 root.mainloop()
