@@ -27,8 +27,6 @@ frame_main = tk.Frame(root)
 frame_main.pack(fill='both', expand=True)
 root.resizable(False, False)
 
-#========== KHOI TAO FRAME ==========
-frame_status = tk.Frame(frame_main)
 #========== FRAME HEADER ========
 frame_header = tk.Frame(frame_main)
 label_tieude = tk.Label(
@@ -193,10 +191,11 @@ combo_trangthai.grid(
 #=========KHU VUC HAM ===========
 def chon_xe(event):
     selected = tree_xe.selection()
+    # selected = (I001,) tuple
 
     if selected:
         xe = tree_xe.item(selected[0], 'values')
-
+        # xe = tree_xe.item(I001, values)
         entry_maxe.delete(0, 'end')
         entry_maxe.insert(0, xe[0])
 
@@ -267,25 +266,31 @@ def them_xe():
     maloai = maloai.upper()
 
     kq = xedao.them_xe(maxe, bienso, tenxe, maloai, trangthai)
-    if kq:
+    if kq == True:
         messagebox.showinfo("THÔNG BÁO", "THÊM XE THÀNH CÔNG!")
         hien_thi_danh_sach_xe()
     else:
         messagebox.showerror("ERROR", "THÊM XE THẤT BẠI!!!")
-
 def xoa_xe():
     selected = tree_xe.selection()
     if not selected:
-        messagebox.showerror("ERROR", "Vui Lòng Chọn Xe Cần Xóa!")
+        messagebox.showwarning("Thông báo", "Vui lòng chọn xe cần xóa!")
         return
-    xoaxe = tree_xe.item(selected[0], 'values')
-    maxexoa = xoaxe[0]
-    kq = xedao.xoa_xe(maxexoa)
-    if kq:
-        messagebox.showinfo("THÔNG BÁO", "Xóa Xe Thành Công!")
-        hien_thi_danh_sach_xe()
-    else:
-        messagebox.showerror("ERROR", "Xóa Xe Thất Bại!!!")
+    xe = tree_xe.item(selected[0], "values")
+    maxe = xe[0]
+
+    # Hỏi người dùng trước khi xóa
+    xacnhan = messagebox.askyesno(
+        "Xác nhận xóa",
+        f"Bạn có chắc muốn xóa xe có mã '{maxe}' không?"
+    )
+
+    if not xacnhan:
+        return
+    xedao.xoa_xe(maxe)
+    messagebox.showinfo("Thông báo", "Xóa xe thành công!")
+    hien_thi_danh_sach_xe()
+    huy_xe()
 def sua_xe():
     selected = tree_xe.selection()
     if not selected:
@@ -833,17 +838,21 @@ def sua_lai_xe():
 def xoa_lai_xe():
     selected = tree_laixe.selection()
     if not selected:
-        messagebox.showerror("ERROR", "Vui Lòng Chọn Lái Xe Cần Xóa !")
+        messagebox.showwarning("Thông báo", "Vui lòng chọn lái xe cần xóa!")
         return
-    laixe = tree_laixe.item(selected[0], 'values')
-    malaixe = laixe[0]
-    kq = laixedao.xoa_lai_xe(malaixe)
-    if kq:
-        messagebox.showinfo("THÔNG BÁO", "Xóa Lái Xe Thành Công !")
-        hien_thi_danh_sach_lai_Xe()
-    else:
-        messagebox.showerror("ERROR", "Xóa Lái Xe Thất Bại !")
+    laixe = tree_laixe.item(selected[0], "values")
+    malx = laixe[0]
 
+    xacnhan = messagebox.askyesno(
+        "Xác nhận xóa",
+        f"Bạn có chắc muốn xóa lái xe có mã '{malx}' không?"
+    )
+    if not xacnhan:
+        return
+    laixedao.xoa_lai_xe(malx)
+    messagebox.showinfo("Thông báo", "Xóa lái xe thành công!")
+    hien_thi_danh_sach_lai_Xe()
+    huy_lai_xe()
 def thong_ke_lai_xe():
     ket_qua = laixedao.thong_ke_lai_xe()
 
@@ -1815,8 +1824,6 @@ tree_phancong.bind(
     "<<TreeviewSelect>>",
     chon_phan_cong
 )
-
-
 hien_thi_danh_sach_phancong()
 
 #=========== MAINLOOP ============
